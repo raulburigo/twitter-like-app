@@ -1,0 +1,5 @@
+coding enterpreneurs - twitter-like app
+
+at 51:00 Django has a shortcut for this... the get_object_or_404
+at 1:20:00 why not using "for (i of listedItems)"?
+at 3:09:00 django built in decorator @login_required
