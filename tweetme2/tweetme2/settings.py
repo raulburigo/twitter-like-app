@@ -34,7 +34,11 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
+    # internal
     'tweets',
+    # third-party
+    'rest_framework',
+    # defaul django
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -124,3 +128,10 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 LOGIN_URL = "/login"
+
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ]
+}
