@@ -1,21 +1,19 @@
 import React, {useState} from 'react'
 import ActionBtn from './ActionBtn'
-import ParentTweet from './ParentTweet'
-
+import UserPicture from './UserPicture'
+import UserLink from './UserLink'
+import TweetTime from './TweetTime'
 
 function Tweet(props) {
   const {tweet, didRetweet} = props
-  const [actionTweet, setActionTweet] = useState(props.tweet ? props.tweet : null)
-  const className = props.className ? props.className : 'col-10 mx-auto col-md-6'
-  const isParent = props.isParent ? props.isParent : false
+  const tweetToDisplay = tweet.is_retweet ? tweet.original_tweet : tweet
+  const [actionTweet, setActionTweet] = useState(tweetToDisplay ? tweetToDisplay : null)
   const path = window.location.pathname
   const match = path.match(/(?<tweetid>\d+)/)
   const urlTweetId = match ? match.groups.tweetid : -1
-  const isDetail = `${tweet.id}` === `${urlTweetId}`
-
+  const isDetail = `${tweetToDisplay.id}` === `${urlTweetId}`
+  
   const handlePerformAction = (newActionTweet, status) => {
-    console.log(actionTweet)
-    console.log(newActionTweet)
     if (status === 200) {
       setActionTweet(newActionTweet)
     } else if (status === 201) {
@@ -24,26 +22,49 @@ function Tweet(props) {
       }
     }
   }
-  
+
   const handleLink = (event) => {
     event.preventDefault()
-    window.location.href = `/${tweet.id}`
+    window.location.href = `/${tweetToDisplay.id}`
+    event.stopPropagation()
   }
-
+  
   return (
-    <div className={className}>
-      <div>
-      <p>{tweet.id} - {tweet.content}</p>
-      <ParentTweet tweet={tweet}/>
+
+    <div className={isDetail === true ? "container-fluid border my-1" : "container-fluid border my-1 clickabletweet"} 
+          onClick={isDetail === true ? null : handleLink}>
+      <div className="row">
+        <div className="col">
+          {tweet.is_retweet ? 
+            <p className='small text-muted'><UserLink user={tweet.user} includeFullName={true}/> Retweeted</p> :
+            <p className='small text-muted'></p>
+          }
+        </div>
       </div>
-      <div className='btn btn-group'>
-      {(actionTweet && isParent === false) &&
-        <React.Fragment>
-        <ActionBtn tweet={actionTweet} didPerformAction={handlePerformAction} action={{type: "like", display:"Likes"}}/>
-        <ActionBtn tweet={actionTweet} didPerformAction={handlePerformAction} action={{type: "unlike", display:"Unlike"}}/>
-        <ActionBtn tweet={actionTweet} didPerformAction={handlePerformAction} action={{type: "retweet", display:"Retweet"}}/>
-        </React.Fragment>}
-        {isDetail === true ? null : <button className='btn btn-outline-primary btn-sm' onClick={handleLink}>Detail</button>}
+      <div className="row">
+        <div className="col">
+          <div className='d-flex'>
+            <div className=''>
+              <UserPicture user={tweetToDisplay.user}/>
+            </div>
+            <div className='col-11'>
+              <div>
+                <p>
+                  <UserLink user={tweetToDisplay.user} includeFullName={true}/>
+                  <TweetTime tweet={tweetToDisplay}/>
+                </p>
+                <p style={{"wordWrap":"break-word"}}>{tweetToDisplay.content}</p>
+              </div>
+              <div className='btn btn-group px-0'>          
+                <React.Fragment>
+                  <ActionBtn tweet={actionTweet} target={tweetToDisplay} didPerformAction={handlePerformAction} action={{type: "like", display:"Likes"}}/>
+                  <ActionBtn tweet={actionTweet} target={tweetToDisplay} didPerformAction={handlePerformAction} action={{type: "unlike", display:"Unlike"}}/>
+                  <ActionBtn tweet={actionTweet} target={tweetToDisplay} didPerformAction={handlePerformAction} action={{type: "retweet", display:"Retweet"}}/>
+                </React.Fragment>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )

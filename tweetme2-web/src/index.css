@@ -11,3 +11,27 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+#unfollowBtn:before {
+  content: '';
+}
+#unfollowBtn:hover {
+  background-color: red;
+  border-color: red;
+}
+#unfollowBtn:hover:before {
+  content: 'Unfollow';
+}
+#unfollowBtn:hover:after {
+  content: '';
+}
+#unfollowBtn:hover span {
+  display: none;
+}
+/* .clickabletweet {
+  cursor: pointer;
+} */
+.clickabletweet:hover {
+  background-color: #e7e6f0;
+}

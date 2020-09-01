@@ -8,7 +8,6 @@ function TweetsMainApp(props) {
     const canTweet = props.data.canTweet === "false" ? false : true
 
     const handleNewTweet = (newTweet) => {
-        console.log(newTweet)
         let tempNewTweets = [...newTweets]
         tempNewTweets.unshift(newTweet)
         setNewTweets(tempNewTweets)

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}SignUp{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-md-4 offset-md-4">
+        <div class="card auth-card">
+            <div class="card-body">
+                <h4 class="card-title text-center">Register at Tweetme2</h4>
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ next }}">
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
+                </form>
+                    <a href="/login/"><button type="submit" class="btn btn-primary btn-block">Log in</button></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

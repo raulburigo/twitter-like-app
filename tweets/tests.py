@@ -11,9 +11,9 @@ User = get_user_model()
 class TweetTestCase(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='caio', password='somepassword')
-        self.userb = User.objects.create_user(username='ticio', password='somepassword')
         Tweet.objects.create(content='global tweet #1', user=self.user)
         Tweet.objects.create(content='global tweet #2', user=self.user)
+        self.userb = User.objects.create_user(username='ticio', password='somepassword')
         Tweet.objects.create(content='global tweet #3', user=self.userb)
         self.current_count = Tweet.objects.all().count()
 
@@ -97,3 +97,15 @@ class TweetTestCase(TestCase):
         self.assertEqual(response.status_code, 401)
         response = client.get("/api/tweets/1/")
         self.assertEqual(response.status_code, 404)
+
+    def test_tweets_related_name(self):
+        tweets_count = self.user.tweets.count()
+        self.assertEqual(tweets_count, 2)
+
+    def test_likes_related_name(self):
+        client = self.get_client()
+        client.post("/api/tweets/action/", {"id": 1, "action": "like"})
+        related_likes_count = self.user.likes.count()
+        query_likes_count = self.user.tweetlike_set.count()
+        self.assertEqual(related_likes_count, query_likes_count)
+        self.assertEqual(related_likes_count, 1)

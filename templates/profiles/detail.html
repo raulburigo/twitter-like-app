@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="border-bottom mb-4" id="tweetme-2-profile"
+    data-username="{{ profile_username }}"
+    data-can-tweet='false'>
+</div>
+
+<h2>Tweets</h2>
+<div id='tweetme2app'
+    data-username="{{ profile_username }}"
+    data-can-tweet='false'>
+</div>
+
+
+{% endblock content %}

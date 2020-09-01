@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="row">
+
+{% if request.user.is_authenticated %}
+
+<div class="col col-md-7 offset-md-2">
+<h1>Hello, {{request.user}}!!</h1>
+<div id="tweetme-feed" data-can-tweet='true'></div>
+</div>
+
+{% else %}
+
+<h1>Welcome to Tweetme2</h1>
+<div id="tweetme2app" data-can-tweet='false'></div>
+
+{% endif %}
+
+</div>
+
+{% endblock content %}

@@ -2,11 +2,11 @@ import React, {useEffect, useState} from 'react';
 import Tweet from './Tweet';
 import apiTweetsList from '../functions/ApiTweetsList'
 
-
 function TweetsList(props) {
 
   const [tweetsInit, setTweetsInit] = useState([])
   const [tweets, setTweets] = useState([])
+  const [nextUrl, setNextUrl] = useState(null)
   const [tweetsDidSet, setTweetsDidSet] = useState(false)
 
   useEffect(() => {
@@ -20,7 +20,8 @@ function TweetsList(props) {
     if (tweetsDidSet === false) {
       const handleTweetListLookup = (response, status) => {
         if (status === 200) {
-          setTweetsInit(response)
+          setTweetsInit(response.results)
+          setNextUrl(response.next)
           setTweetsDidSet(true)
         } else {
           alert("there was an error here!")
@@ -39,18 +40,35 @@ function TweetsList(props) {
     setTweets(updateFinalTweets)  
   }
 
+  const handleLoadNext = (event) => {
+    event.preventDefault()
+    if (nextUrl !== null) {
+      const handleLoadNextResponse = (response, status) => {
+        if (status === 200) {
+          setNextUrl(response.next)
+          const newTweets = [...tweets].concat(response.results)
+          setTweetsInit(newTweets)
+          setTweets(newTweets)
+        } else {
+          alert("there was an error here!")
+        }
+      }
+      apiTweetsList(props.username, handleLoadNextResponse, nextUrl)
+    }
+  }
+
   return (
-    <div>
+    <React.Fragment>
         {tweets.map((item, index) => {
         return <Tweet
             tweet={item}
             didRetweet={handleDidRetweet}
-            className='my-5 py-5 border bg-white text-dark'
-            idName={item.id}
+            className='my-5 py-3 px-2 border bg-white text-dark'
             key={`${index}-{item.id}`}
         />
         })}
-    </div>
+      { nextUrl !== null && <button className="btn btn-outline-primary" onClick={handleLoadNext}>Show More</button>}
+    </React.Fragment>
   );
 }
 
