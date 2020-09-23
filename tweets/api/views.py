@@ -2,7 +2,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
-# from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required
 from tweets.models import Tweet
 from .serializers import (
     TweetSerializer,
@@ -29,7 +29,7 @@ def get_paginated_queryset_response(queryset, request):
     return paginator.get_paginated_response(serializer.data)
 
 
-# @login_required
+@login_required
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def tweet_feed_view(request, *args, **kwargs):

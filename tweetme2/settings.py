@@ -12,7 +12,7 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 SECRET_KEY = 'mbihr**2ry^353hxd%wjiqljg$fp)%c_26(4-h^tpg7jvsqo*&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
@@ -30,7 +30,7 @@ INSTALLED_APPS = [
     # third-party
     'rest_framework',
     'corsheaders',
-    # defaul django
+    # default django
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -81,7 +81,6 @@ DATABASES = {
     }
 }
 
-
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 
@@ -118,13 +117,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = "/static/"
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "tweetme2-web/build/static/"),
-]
-
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+if DEBUG: 
+   STATIC_ROOT = os.path.join(BASE_DIR, '/static')
+else:
+   STATIC_ROOT = os.path.join(BASE_DIR, 'static') 
 
 LOGIN_URL = "/login"
 LOGIN_REDIRECT_URL = '/'
@@ -139,7 +137,6 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
-        'tweetme2.dev.auth.DevAuth',
     ]
 }
 
